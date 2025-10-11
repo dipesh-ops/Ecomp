@@ -73,7 +73,7 @@ const Navbar = () => {
           })
         }
 
-        {
+        {user && user.role === "user" &&
           cartItems && <Link to='/cart' className='text-xl font-semibold cursor-pointer mr-4'> <i className="ri-shopping-cart-fill"></i> <small>({cartItems.length})</small>
          </Link>
         }

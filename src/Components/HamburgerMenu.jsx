@@ -96,14 +96,14 @@ const HamburgerMenu = () => {
                                 User Dashboard 
                             </Link> 
                         )}
-                        <Link 
+                        {user && user.role === "user" && <Link 
                             to="/cart" 
                             className='flex items-center p-3 text-gray-700 rounded hover:bg-gray-100 transition-colors'
                             onClick={() => dispatch(closeMenu())}
                         >
                             <i className="ri-shopping-cart-line mr-3 ri-lg"></i>
                             Cart 
-                        </Link>
+                        </Link>}
                         
                         {/* Authentication Section */}
                         <div className="border-t border-gray-200 pt-3 mt-3">

@@ -34,7 +34,11 @@ function App() {
             <Route path="/" element={<Home/>}/>
             <Route path="/products" element={<GetAllProudcts/>}/>
             <Route path="/product/:id" element={<ProductInfo/>}/>
-            <Route path="/cart" element={<CartPage/>}/>
+            <Route path="/cart" element={
+              <ProtectedRouteForUser>
+                <CartPage/>
+              </ProtectedRouteForUser>
+            }/>
             <Route path="/address" element={<AddAddress/>}/>
             <Route path="/signup" element={<SignUp/>}/>
             <Route path="/login" element={<Login/>}/>
