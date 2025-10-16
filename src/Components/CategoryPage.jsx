@@ -1,14 +1,34 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import myContext from '../context/myContext'
 import { Link, useParams } from 'react-router-dom';
 import Loading from './Loading';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { addToCart, deleteFromCart } from '../Redux/cartSlice';
 
 const CategoryPage = () => {
     const {categoryname} = useParams();
     const context = useContext(myContext);
+    const cartItems = useSelector((state) => state.cart);
     const {getAllProducts, loading} = context;
 
     const filterProduct = getAllProducts.filter((obj)=> obj.category.includes(categoryname))
+
+    const dispatch = useDispatch();
+
+    const addCart = (item) => {
+        dispatch(addToCart(item));
+        toast.success("Product added to cart");
+    }
+
+    const deleteCart = (item) => {
+        dispatch(deleteFromCart(item));
+        toast.success("Product removed from cart");
+    }
+
+    useEffect(() => {
+            localStorage.setItem("cart", JSON.stringify(cartItems))
+        }, [cartItems])
 
     return loading ? <Loading/> : (
         <div className='mx-4 sm:mx-6 lg:mx-8'>
@@ -34,7 +54,9 @@ const CategoryPage = () => {
 
             {filterProduct.length > 0 && (
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 mt-6 lg:mt-8'>
-                    {filterProduct.map((item, index) => (
+                    {filterProduct.map((item, index) => {
+                        const isInCart = cartItems.some((p) => p.id === item.id);
+                        (
                         <Link 
                             to={`/product/${item.id}`} 
                             key={index} 
@@ -58,15 +80,20 @@ const CategoryPage = () => {
                                 </p>
 
                                 <button 
-                                    className='w-full bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-lg font-medium flex items-center justify-center gap-2 text-sm sm:text-base mt-auto'
-                                    onClick={(e) => e.preventDefault()}
-                                >
-                                    <i className="ri-shopping-cart-line"></i>
-                                    Add to Cart
-                                </button>
+                                        onClick={() => isInCart ? deleteCart(item) : addCart(item)}
+                                        className={`w-full py-2 sm:py-2.5 px-3 sm:px-4 rounded-md text-white font-medium transition-all duration-200 flex items-center justify-center gap-2 text-sm sm:text-base mt-auto
+                                            ${isInCart 
+                                                ? 'bg-orange-500 hover:bg-orange-600 active:bg-orange-700' 
+                                                : 'bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700'
+                                            }
+                                        `}
+                                    >
+                                        <i className={`${isInCart ? 'ri-delete-bin-line' : 'ri-shopping-cart-line'}`}></i>
+                                        {isInCart ? 'Remove from Cart' : 'Add to Cart'}
+                                    </button>
                             </div>
                         </Link>
-                    ))}
+                    )})}
                 </div>
             )}
         </div>
