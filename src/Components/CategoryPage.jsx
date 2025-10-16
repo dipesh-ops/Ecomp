@@ -77,11 +77,11 @@ const CategoryPage = () => {
                                     ${item.price}
                                 </p>
 
-                                {cartItems.some((p)=> p.id === product.id) ? 
-                                    <button onClick={()=> deleteCart(product)} className='bg-orange-500 px-6 py-3 w-full sm:w-1/2 lg:w-1/3 rounded-lg text-white hover:bg-orange-600 cursor-pointer'>
+                                {cartItems.some((p)=> p.id === item.id) ? 
+                                    <button onClick={()=> deleteCart(item)} className='bg-orange-500 px-6 py-3 w-full sm:w-1/2 lg:w-1/3 rounded-lg text-white hover:bg-orange-600 cursor-pointer'>
                                          Remove From Cart
                                     </button> : 
-                                    <button onClick={()=> addToCartFunction(product)} className='bg-emerald-500 px-6 py-3 w-full sm:w-1/2 lg:w-1/3 rounded-lg text-white hover:bg-emerald-600 cursor-pointer'>
+                                    <button onClick={()=> addToCartFunction(item)} className='bg-emerald-500 px-6 py-3 w-full sm:w-1/2 lg:w-1/3 rounded-lg text-white hover:bg-emerald-600 cursor-pointer'>
                                           Add to Cart
                                     </button> 
                   }
