@@ -16,7 +16,7 @@ const CategoryPage = () => {
 
     const dispatch = useDispatch();
 
-    const addCart = (item) => {
+    const addToCartFunction = (item) => {
         dispatch(addToCart(item));
         toast.success("Product added to cart");
     }
@@ -54,9 +54,7 @@ const CategoryPage = () => {
 
             {filterProduct.length > 0 && (
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 mt-6 lg:mt-8'>
-                    {filterProduct.map((item, index) => {
-                        const isInCart = cartItems.some((p) => p.id === item.id);
-                        (
+                    {filterProduct.map((item, index) =>(
                         <Link 
                             to={`/product/${item.id}`} 
                             key={index} 
@@ -79,21 +77,17 @@ const CategoryPage = () => {
                                     ${item.price}
                                 </p>
 
-                                <button 
-                                        onClick={() => isInCart ? deleteCart(item) : addCart(item)}
-                                        className={`w-full py-2 sm:py-2.5 px-3 sm:px-4 rounded-md text-white font-medium transition-all duration-200 flex items-center justify-center gap-2 text-sm sm:text-base mt-auto
-                                            ${isInCart 
-                                                ? 'bg-orange-500 hover:bg-orange-600 active:bg-orange-700' 
-                                                : 'bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700'
-                                            }
-                                        `}
-                                    >
-                                        <i className={`${isInCart ? 'ri-delete-bin-line' : 'ri-shopping-cart-line'}`}></i>
-                                        {isInCart ? 'Remove from Cart' : 'Add to Cart'}
-                                    </button>
+                                {cartItems.some((p)=> p.id === product.id) ? 
+                                    <button onClick={()=> deleteCart(product)} className='bg-orange-500 px-6 py-3 w-full sm:w-1/2 lg:w-1/3 rounded-lg text-white hover:bg-orange-600 cursor-pointer'>
+                                         Remove From Cart
+                                    </button> : 
+                                    <button onClick={()=> addToCartFunction(product)} className='bg-emerald-500 px-6 py-3 w-full sm:w-1/2 lg:w-1/3 rounded-lg text-white hover:bg-emerald-600 cursor-pointer'>
+                                          Add to Cart
+                                    </button> 
+                  }
                             </div>
                         </Link>
-                    )})}
+                    ))}
                 </div>
             )}
         </div>
